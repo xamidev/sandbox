@@ -1,6 +1,6 @@
 /**
-* @file src/main.c
-* @brief Sandbox game in Raylib
+* @file src/cells.h
+* @brief Cell logic header
 * 
 * @copyright
 * Anyone is free to copy, modify, publish, use, compile, sell, or
@@ -27,29 +27,7 @@
 * For more information, please refer to <https://unlicense.org/>
 */
 
-#include "raylib.h"
-#include "cells.h"
+#ifndef CELLS_H
+#define CELLS_H
 
-int main ()
-{
-	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
-	InitWindow(1280, 800, "Sandbox");
-	
-	// game loop
-	while (!WindowShouldClose())
-	{
-		test();
-		// drawing
-		BeginDrawing();
-
-		// Setup the back buffer for drawing (clear color and depth buffers)
-		ClearBackground(BLACK);
-		
-		// end the frame and get ready for the next one  (display frame, poll input, etc...)
-		EndDrawing();
-	}
-
-	// destroy the window and cleanup the OpenGL context
-	CloseWindow();
-	return 0;
-}
+#endif // CELLS_H

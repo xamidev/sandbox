@@ -1,3 +1,10 @@
+# Goal
+
+Building my Powder Toy in C with Raylib.
+It will be a cellular automaton with gravity and different particles: the evolution of conway's game of life...
+Users should be able to save their creations.
+It should be in a well-written and well-optimized code, and should be multiplatform ready.
+
 # Raylib-Quickstart
 A simple cross platform template for setting up a project with the bleeding edge raylib code.
 Works with C or C++.
