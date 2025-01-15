@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include "utils.h"
 
 /* TODO
 - Changing brush size
@@ -48,9 +49,7 @@ int main ()
 	GameScreen currentScreen = TITLE;
 	CellType brush = SAND;
 
-	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
-	InitWindow(WINDOW_SIZE_PIXELS, WINDOW_SIZE_PIXELS, "Sandbox");
-	SetTargetFPS(TARGET_FPS);
+	initEnv();
 	
 	// game loop
 	while (!WindowShouldClose())
@@ -92,14 +91,7 @@ int main ()
 		switch (currentScreen)
 		{
 			case TITLE:
-				int titleWidth = MeasureText("SANDBOX", 40);
-				DrawRectangle(0, 0, WINDOW_SIZE_PIXELS, WINDOW_SIZE_PIXELS, DARKBLUE);
-				DrawText("SANDBOX", (WINDOW_SIZE_PIXELS-titleWidth)/2, 20, 40, WHITE);
-				int controlsWidth = MeasureText("Controls", 30);
-				DrawText("Controls", (WINDOW_SIZE_PIXELS-controlsWidth)/2, 100, 30, WHITE);
-				DrawText("Left click to spawn sand", 25, 150, 30, WHITE);
-				int startGameWidth = MeasureText("Press Space to start!", 30);
-				DrawText("Press Space to start!", (WINDOW_SIZE_PIXELS-startGameWidth)/2, 400, 30, WHITE);
+				drawTitleScreen();
 				break;
 			case GAME:
 				updateGrid(grid);

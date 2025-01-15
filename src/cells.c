@@ -47,6 +47,10 @@ void drawGrid(int grid[CELL_AMOUNT][CELL_AMOUNT])
                     break;
                 case STONE:
                     DrawRectangle(CELL_SIZE_PIXELS*j, CELL_SIZE_PIXELS*i, CELL_SIZE_PIXELS, CELL_SIZE_PIXELS, DARKGRAY);
+                    break;
+                case WATER:
+                    DrawRectangle(CELL_SIZE_PIXELS*j, CELL_SIZE_PIXELS*i, CELL_SIZE_PIXELS, CELL_SIZE_PIXELS, BLUE);
+                    break;
                 default:
                     break;
             }
@@ -59,6 +63,9 @@ void putCell(int grid[CELL_AMOUNT][CELL_AMOUNT], int posX, int posY, CellType br
     if (grid[posX][posY] == VOID)
     {
         grid[posX][posY] = brush;
+    } else if (brush == VOID)
+    {
+        grid[posX][posY] = VOID;
     }
 }
 
@@ -83,6 +90,34 @@ void updateGrid(int grid[CELL_AMOUNT][CELL_AMOUNT])
                     else if (i+1 < CELL_AMOUNT && j-1 >= 0 && grid[i+1][j-1] == VOID) {
                         grid[i][j] = VOID;
                         grid[i+1][j-1] = SAND; // falling down-left
+                    } /* Sand falling thru diagonally placed stone: it's not a bug, it's a FEATURE! lol */
+                    else if (i+1 < CELL_AMOUNT && grid[i+1][j] == WATER) {
+                        grid[i][j] = WATER;
+                        grid[i+1][j] = SAND;
+                    }
+                    break;
+                case WATER:
+                    if (i+1 < CELL_AMOUNT && grid[i+1][j] == VOID) {
+                        grid[i][j] = VOID;
+                        grid[i+1][j] = WATER;
+                    } else if (i+1 < CELL_AMOUNT && j+1 < CELL_AMOUNT && grid[i+1][j+1] == VOID) {
+                        grid[i][j] = VOID;
+                        grid[i+1][j+1] = WATER;
+                    } else if (i+1 < CELL_AMOUNT && j-1 >= 0 && grid[i+1][j-1] == VOID) {
+                        grid[i][j] = VOID;
+                        grid[i+1][j-1] = WATER;
+                    } else if (j+1 < CELL_AMOUNT && grid[i][j+1] == VOID) {
+                        grid[i][j] = VOID;
+                        grid[i][j+1] = WATER;
+                    } else if (j-1 >= 0 && grid[i][j-1] == VOID) {
+                        grid[i][j] = VOID;
+                        grid[i][j-1] = WATER;
+                    } else if (j+1 < CELL_AMOUNT && grid[i][j+1] == WATER) {
+                        grid[i][j] = WATER;
+                        grid[i][j+1] = WATER;
+                    } else if (j-1 >= 0 && grid[i][j-1] == WATER) {
+                        grid[i][j] = WATER;
+                        grid[i][j-1] = WATER;
                     }
                     break;
                 default:
