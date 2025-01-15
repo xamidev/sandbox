@@ -30,4 +30,26 @@
 #ifndef CELLS_H
 #define CELLS_H
 
+#define CELL_AMOUNT         80
+#define CELL_SIZE_PIXELS    10
+#define TARGET_FPS          60
+
+#define WINDOW_SIZE_PIXELS  (CELL_AMOUNT * CELL_SIZE_PIXELS)
+
+typedef enum GameScreen 
+{
+    TITLE,
+    GAME
+} GameScreen;
+
+typedef enum CellType
+{
+    VOID,
+    SAND
+} CellType;
+
+void drawGrid(int grid[CELL_AMOUNT][CELL_AMOUNT]);
+void putCell(int grid[CELL_AMOUNT][CELL_AMOUNT], int posX, int posY);
+void updateGrid(int grid[CELL_AMOUNT][CELL_AMOUNT]);
+
 #endif // CELLS_H

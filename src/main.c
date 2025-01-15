@@ -32,18 +32,58 @@
 
 int main ()
 {
+	int grid[CELL_AMOUNT][CELL_AMOUNT] = {0};
+	GameScreen currentScreen = TITLE;
+
 	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
-	InitWindow(1280, 800, "Sandbox");
+	InitWindow(WINDOW_SIZE_PIXELS, WINDOW_SIZE_PIXELS, "Sandbox");
+	SetTargetFPS(TARGET_FPS);
 	
 	// game loop
 	while (!WindowShouldClose())
 	{
-		test();
-		// drawing
-		BeginDrawing();
+		/* Update */
+		switch (currentScreen)
+		{
+			case TITLE:
+				if (IsKeyPressed(KEY_SPACE)) {
+					currentScreen = GAME;
+					ClearBackground(BLACK);
+				}
+				break;
+			case GAME:
+				if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+					Vector2 cellPosition = GetMousePosition();
+					int i = cellPosition.y/CELL_SIZE_PIXELS;
+					int j = cellPosition.x/CELL_SIZE_PIXELS;
+					putCell(grid, i, j);
+				}
+				break;
+			default:
+				break;
+		}
 
-		// Setup the back buffer for drawing (clear color and depth buffers)
-		ClearBackground(BLACK);
+		/* Drawing */
+		BeginDrawing();
+		switch (currentScreen)
+		{
+			case TITLE:
+				int titleWidth = MeasureText("SANDBOX", 40);
+				DrawRectangle(0, 0, WINDOW_SIZE_PIXELS, WINDOW_SIZE_PIXELS, DARKBLUE);
+				DrawText("SANDBOX", (WINDOW_SIZE_PIXELS-titleWidth)/2, 20, 40, WHITE);
+				int controlsWidth = MeasureText("Controls", 30);
+				DrawText("Controls", (WINDOW_SIZE_PIXELS-controlsWidth)/2, 100, 30, WHITE);
+				DrawText("Left click to spawn sand", 25, 150, 30, WHITE);
+				int startGameWidth = MeasureText("Press Space to start!", 30);
+				DrawText("Press Space to start!", (WINDOW_SIZE_PIXELS-startGameWidth)/2, 400, 30, WHITE);
+				break;
+			case GAME:
+				updateGrid(grid);
+				drawGrid(grid);
+				break;
+			default:
+				break;
+		}
 		
 		// end the frame and get ready for the next one  (display frame, poll input, etc...)
 		EndDrawing();

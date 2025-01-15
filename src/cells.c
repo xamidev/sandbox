@@ -28,3 +28,58 @@
 */
 
 #include <stdio.h>
+#include "cells.h"
+#include "raylib.h"
+
+void drawGrid(int grid[CELL_AMOUNT][CELL_AMOUNT])
+{
+    for (size_t i=0; i<CELL_AMOUNT; i++)
+    {
+        for (size_t j=0; j<CELL_AMOUNT; j++)
+        {
+            if (grid[i][j] == VOID)
+            {
+                DrawRectangle(CELL_SIZE_PIXELS*j, CELL_SIZE_PIXELS*i, CELL_SIZE_PIXELS, CELL_SIZE_PIXELS, BLACK);
+            }
+            if (grid[i][j] == SAND)
+            {
+                DrawRectangle(CELL_SIZE_PIXELS*j, CELL_SIZE_PIXELS*i, CELL_SIZE_PIXELS, CELL_SIZE_PIXELS, MAROON);
+            }
+        }
+    }
+}
+
+void putCell(int grid[CELL_AMOUNT][CELL_AMOUNT], int posX, int posY)
+{
+    grid[posX][posY] = SAND;
+}
+
+void updateGrid(int grid[CELL_AMOUNT][CELL_AMOUNT])
+{
+    for (int i=CELL_AMOUNT-1; i>=0; i--)
+    {
+        for (int j=0; j<CELL_AMOUNT; j++)
+        {
+            switch (grid[i][j])
+            {
+                case VOID:
+                    break;
+                case SAND:
+                    if (i+1 < CELL_AMOUNT && grid[i+1][j] == VOID) {
+                        grid[i][j] = VOID;
+                        grid[i+1][j] = SAND; // falling downwards
+                    } else if (i+1 < CELL_AMOUNT && j+1 < CELL_AMOUNT && grid[i+1][j+1] == VOID) {
+                        grid[i][j] = VOID;
+                        grid[i+1][j+1] = SAND; // falling down-right
+                    }
+                    else if (i+1 < CELL_AMOUNT && j-1 >= 0 && grid[i+1][j-1] == VOID) {
+                        grid[i][j] = VOID;
+                        grid[i+1][j-1] = SAND; // falling down-left
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
