@@ -29,11 +29,24 @@
 
 #include "raylib.h"
 #include "cells.h"
+#include <stddef.h>
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+
+/* TODO
+- Changing brush size
+- Add more elements
+- Add an interface
+- Saving and loading world (+ better title screen)
+*/
 
 int main ()
 {
+	srand(time(NULL));
 	int grid[CELL_AMOUNT][CELL_AMOUNT] = {0};
 	GameScreen currentScreen = TITLE;
+	CellType brush = SAND;
 
 	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
 	InitWindow(WINDOW_SIZE_PIXELS, WINDOW_SIZE_PIXELS, "Sandbox");
@@ -56,7 +69,17 @@ int main ()
 					Vector2 cellPosition = GetMousePosition();
 					int i = cellPosition.y/CELL_SIZE_PIXELS;
 					int j = cellPosition.x/CELL_SIZE_PIXELS;
-					putCell(grid, i, j);
+					putCell(grid, i, j, brush);
+				}
+				if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
+					// spawn some text corresponding to Brush Type, fading
+					if (brush < CELL_TYPE_MAX-1)
+					{
+						brush++;
+					} else {
+						brush = VOID;
+					}
+					printf("Brush changed for %d\n", brush);
 				}
 				break;
 			default:
@@ -65,6 +88,7 @@ int main ()
 
 		/* Drawing */
 		BeginDrawing();
+		ClearBackground(BLACK);
 		switch (currentScreen)
 		{
 			case TITLE:

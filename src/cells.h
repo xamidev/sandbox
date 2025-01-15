@@ -36,6 +36,9 @@
 
 #define WINDOW_SIZE_PIXELS  (CELL_AMOUNT * CELL_SIZE_PIXELS)
 
+#define YELLOW_SAND         CLITERAL(Color){222, 233, 129, 255}
+#define YELLOW_SAND_ALT     CLITERAL(Color){166, 172, 116, 255}
+
 typedef enum GameScreen 
 {
     TITLE,
@@ -45,11 +48,14 @@ typedef enum GameScreen
 typedef enum CellType
 {
     VOID,
-    SAND
+    SAND,
+    STONE,
+    WATER,
+    CELL_TYPE_MAX
 } CellType;
 
 void drawGrid(int grid[CELL_AMOUNT][CELL_AMOUNT]);
-void putCell(int grid[CELL_AMOUNT][CELL_AMOUNT], int posX, int posY);
+void putCell(int grid[CELL_AMOUNT][CELL_AMOUNT], int posX, int posY, CellType brush);
 void updateGrid(int grid[CELL_AMOUNT][CELL_AMOUNT]);
 
 #endif // CELLS_H

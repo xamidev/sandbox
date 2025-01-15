@@ -37,21 +37,29 @@ void drawGrid(int grid[CELL_AMOUNT][CELL_AMOUNT])
     {
         for (size_t j=0; j<CELL_AMOUNT; j++)
         {
-            if (grid[i][j] == VOID)
+            switch(grid[i][j])
             {
-                DrawRectangle(CELL_SIZE_PIXELS*j, CELL_SIZE_PIXELS*i, CELL_SIZE_PIXELS, CELL_SIZE_PIXELS, BLACK);
-            }
-            if (grid[i][j] == SAND)
-            {
-                DrawRectangle(CELL_SIZE_PIXELS*j, CELL_SIZE_PIXELS*i, CELL_SIZE_PIXELS, CELL_SIZE_PIXELS, MAROON);
+                case VOID:
+                    DrawRectangle(CELL_SIZE_PIXELS*j, CELL_SIZE_PIXELS*i, CELL_SIZE_PIXELS, CELL_SIZE_PIXELS, BLACK);
+                    break;
+                case SAND:
+                    DrawRectangle(CELL_SIZE_PIXELS*j, CELL_SIZE_PIXELS*i, CELL_SIZE_PIXELS, CELL_SIZE_PIXELS, YELLOW_SAND);
+                    break;
+                case STONE:
+                    DrawRectangle(CELL_SIZE_PIXELS*j, CELL_SIZE_PIXELS*i, CELL_SIZE_PIXELS, CELL_SIZE_PIXELS, DARKGRAY);
+                default:
+                    break;
             }
         }
     }
 }
 
-void putCell(int grid[CELL_AMOUNT][CELL_AMOUNT], int posX, int posY)
+void putCell(int grid[CELL_AMOUNT][CELL_AMOUNT], int posX, int posY, CellType brush)
 {
-    grid[posX][posY] = SAND;
+    if (grid[posX][posY] == VOID)
+    {
+        grid[posX][posY] = brush;
+    }
 }
 
 void updateGrid(int grid[CELL_AMOUNT][CELL_AMOUNT])
