@@ -36,7 +36,6 @@
 #include "utils.h"
 
 /* TODO
-- Changing brush size
 - Add more elements
 - Add an interface
 - Saving and loading world (+ better title screen)
@@ -49,6 +48,9 @@ int main ()
 	GameScreen currentScreen = TITLE;
 	CellType brush = SAND;
 	int brushSize = 1;
+	int brushTextOpacity = 255;
+	int brushSizeOpacity = 255;
+	char blankStr[10] = {0};
 
 	initEnv();
 	
@@ -79,13 +81,15 @@ int main ()
 					} else {
 						brush = VOID;
 					}
-					printf("Brush changed for %d\n", brush);
+					brushTextOpacity = 255;
 				}
-				if (IsKeyPressed(KEY_UP)) {
+				if (IsKeyPressed(KEY_UP) && brushSize < CELL_AMOUNT) {
 					brushSize++;
+					brushSizeOpacity = 255;
 				}
 				if (IsKeyPressed(KEY_DOWN) && brushSize > 1) {
 					brushSize--;
+					brushSizeOpacity = 255;
 				}
 				if (IsKeyPressed(KEY_C)) {
 					clearGrid(grid);
@@ -106,6 +110,11 @@ int main ()
 			case GAME:
 				updateGrid(grid);
 				drawGrid(grid);
+				Vector2 mousePos = GetMousePosition();
+				DrawText(enumToString(brush), mousePos.x+15, mousePos.y+15, DEFAULT_FONT_SIZE, (Color){255, 255, 255, brushTextOpacity});
+				DrawText(intToString(blankStr, brushSize), mousePos.x-15, mousePos.y-15, DEFAULT_FONT_SIZE, (Color){255, 255, 255, brushSizeOpacity});
+				if (brushTextOpacity-4 > 0) brushTextOpacity-= 4;
+				if (brushSizeOpacity-4 > 0) brushSizeOpacity-= 4;
 				break;
 			default:
 				break;

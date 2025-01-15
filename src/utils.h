@@ -32,5 +32,9 @@
 
 void initEnv(void);
 void drawTitleScreen(void);
+char* enumToString(CellType brush);
+char* intToString(char* str, int n);
+
+#define ENOUGH      10
 
 #endif // UTILS_H

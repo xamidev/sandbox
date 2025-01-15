@@ -29,6 +29,8 @@
 
 #include "raylib.h"
 #include "cells.h"
+#include <stdio.h>
+#include "utils.h"
 
 void initEnv(void)
 {
@@ -39,12 +41,27 @@ void initEnv(void)
 
 void drawTitleScreen(void)
 {
-    int titleWidth = MeasureText("SANDBOX", 40);
+    int titleWidth = MeasureText("Sandbox", 80);
 	DrawRectangle(0, 0, WINDOW_SIZE_PIXELS, WINDOW_SIZE_PIXELS, DARKBLUE);
-	DrawText("SANDBOX", (WINDOW_SIZE_PIXELS-titleWidth)/2, 20, 40, WHITE);
-	int controlsWidth = MeasureText("Controls", 30);
-	DrawText("Controls", (WINDOW_SIZE_PIXELS-controlsWidth)/2, 100, 30, WHITE);
-	DrawText("Left click to spawn sand", 25, 150, 30, WHITE);
+	DrawText("Sandbox", (WINDOW_SIZE_PIXELS-titleWidth)/2, (WINDOW_SIZE_PIXELS/2)-80, 80, WHITE);
 	int startGameWidth = MeasureText("Press Space to start!", 30);
 	DrawText("Press Space to start!", (WINDOW_SIZE_PIXELS-startGameWidth)/2, 400, 30, WHITE);
+}
+
+char* enumToString(CellType brush)
+{
+    switch(brush)
+    {
+        case VOID:  return "Void";
+        case SAND:  return "Sand";
+        case STONE: return "Stone";
+        case WATER: return "Water";
+        default:    return "Unknown";
+    }
+}
+
+char* intToString(char* str, int n)
+{
+    sprintf(str, "%d", n);
+    return str;
 }

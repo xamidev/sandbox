@@ -30,11 +30,13 @@
 #ifndef CELLS_H
 #define CELLS_H
 
-#define CELL_AMOUNT         80
-#define CELL_SIZE_PIXELS    10
 #define TARGET_FPS          60
 
-#define WINDOW_SIZE_PIXELS  (CELL_AMOUNT * CELL_SIZE_PIXELS)
+#define CELL_SIZE_PIXELS    10
+#define WINDOW_SIZE_PIXELS  800
+
+#define CELL_AMOUNT         (WINDOW_SIZE_PIXELS/CELL_SIZE_PIXELS)
+#define DEFAULT_FONT_SIZE   20
 
 #define YELLOW_SAND         CLITERAL(Color){222, 233, 129, 255}
 #define YELLOW_SAND_ALT     CLITERAL(Color){166, 172, 116, 255}

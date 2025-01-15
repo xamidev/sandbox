@@ -61,7 +61,7 @@ void drawGrid(int grid[CELL_AMOUNT][CELL_AMOUNT])
 
 void putCell(int grid[CELL_AMOUNT][CELL_AMOUNT], int posX, int posY, CellType brush, int brushSize)
 {
-    if (grid[posX][posY] == VOID)
+    if (grid[posX][posY] == VOID || grid[posX][posY] == brush)
     {
         for (int i=0; i<brushSize; i++)
         {
@@ -72,9 +72,17 @@ void putCell(int grid[CELL_AMOUNT][CELL_AMOUNT], int posX, int posY, CellType br
                 }
             }
         }
-    } else if (brush == VOID)
-    {
-        grid[posX][posY] = VOID;
+    }
+    else if (brush == VOID) {
+        for (int i=0; i<brushSize; i++)
+        {
+            for (int j=0; j<brushSize; j++)
+            {
+                if (posX+i < CELL_AMOUNT && posY+j < CELL_AMOUNT) {
+                    grid[posX+i][posY+j] = brush;
+                }
+            }
+        }
     }
 }
 
