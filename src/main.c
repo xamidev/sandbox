@@ -48,6 +48,7 @@ int main ()
 	int grid[CELL_AMOUNT][CELL_AMOUNT] = {0};
 	GameScreen currentScreen = TITLE;
 	CellType brush = SAND;
+	int brushSize = 1;
 
 	initEnv();
 	
@@ -68,7 +69,7 @@ int main ()
 					Vector2 cellPosition = GetMousePosition();
 					int i = cellPosition.y/CELL_SIZE_PIXELS;
 					int j = cellPosition.x/CELL_SIZE_PIXELS;
-					putCell(grid, i, j, brush);
+					putCell(grid, i, j, brush, brushSize);
 				}
 				if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
 					// spawn some text corresponding to Brush Type, fading
@@ -79,6 +80,15 @@ int main ()
 						brush = VOID;
 					}
 					printf("Brush changed for %d\n", brush);
+				}
+				if (IsKeyPressed(KEY_UP)) {
+					brushSize++;
+				}
+				if (IsKeyPressed(KEY_DOWN) && brushSize > 1) {
+					brushSize--;
+				}
+				if (IsKeyPressed(KEY_C)) {
+					clearGrid(grid);
 				}
 				break;
 			default:

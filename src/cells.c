@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include "cells.h"
 #include "raylib.h"
+#include <stdlib.h>
 
 void drawGrid(int grid[CELL_AMOUNT][CELL_AMOUNT])
 {
@@ -58,71 +59,78 @@ void drawGrid(int grid[CELL_AMOUNT][CELL_AMOUNT])
     }
 }
 
-void putCell(int grid[CELL_AMOUNT][CELL_AMOUNT], int posX, int posY, CellType brush)
+void putCell(int grid[CELL_AMOUNT][CELL_AMOUNT], int posX, int posY, CellType brush, int brushSize)
 {
     if (grid[posX][posY] == VOID)
     {
-        grid[posX][posY] = brush;
+        for (int i=0; i<brushSize; i++)
+        {
+            for (int j=0; j<brushSize; j++)
+            {
+                if (posX+i < CELL_AMOUNT && posY+j < CELL_AMOUNT) {
+                    grid[posX+i][posY+j] = brush;
+                }
+            }
+        }
     } else if (brush == VOID)
     {
         grid[posX][posY] = VOID;
     }
 }
 
-void updateGrid(int grid[CELL_AMOUNT][CELL_AMOUNT])
-{
-    for (int i=CELL_AMOUNT-1; i>=0; i--)
-    {
-        for (int j=0; j<CELL_AMOUNT; j++)
-        {
-            switch (grid[i][j])
-            {
+void updateGrid(int grid[CELL_AMOUNT][CELL_AMOUNT]) {
+    for (int i = CELL_AMOUNT - 1; i >= 0; i--) {
+        for (int j = 0; j < CELL_AMOUNT; j++) {
+            switch (grid[i][j]) {
                 case VOID:
                     break;
                 case SAND:
-                    if (i+1 < CELL_AMOUNT && grid[i+1][j] == VOID) {
+                    if (i + 1 < CELL_AMOUNT && grid[i + 1][j] == VOID) {
                         grid[i][j] = VOID;
-                        grid[i+1][j] = SAND; // falling downwards
-                    } else if (i+1 < CELL_AMOUNT && j+1 < CELL_AMOUNT && grid[i+1][j+1] == VOID) {
+                        grid[i + 1][j] = SAND;
+                    } else if (i + 1 < CELL_AMOUNT && j + 1 < CELL_AMOUNT && grid[i + 1][j + 1] == VOID) {
                         grid[i][j] = VOID;
-                        grid[i+1][j+1] = SAND; // falling down-right
-                    }
-                    else if (i+1 < CELL_AMOUNT && j-1 >= 0 && grid[i+1][j-1] == VOID) {
+                        grid[i + 1][j + 1] = SAND;
+                    } else if (i + 1 < CELL_AMOUNT && j - 1 >= 0 && grid[i + 1][j - 1] == VOID) {
                         grid[i][j] = VOID;
-                        grid[i+1][j-1] = SAND; // falling down-left
-                    } /* Sand falling thru diagonally placed stone: it's not a bug, it's a FEATURE! lol */
-                    else if (i+1 < CELL_AMOUNT && grid[i+1][j] == WATER) {
+                        grid[i + 1][j - 1] = SAND;
+                    } else if (i + 1 < CELL_AMOUNT && grid[i + 1][j] == WATER) {
                         grid[i][j] = WATER;
-                        grid[i+1][j] = SAND;
+                        grid[i + 1][j] = SAND;
                     }
                     break;
                 case WATER:
-                    if (i+1 < CELL_AMOUNT && grid[i+1][j] == VOID) {
+                    if (i + 1 < CELL_AMOUNT && grid[i + 1][j] == VOID) {
                         grid[i][j] = VOID;
-                        grid[i+1][j] = WATER;
-                    } else if (i+1 < CELL_AMOUNT && j+1 < CELL_AMOUNT && grid[i+1][j+1] == VOID) {
+                        grid[i + 1][j] = WATER;
+                    } else if (i + 1 < CELL_AMOUNT && j + 1 < CELL_AMOUNT && grid[i + 1][j + 1] == VOID) {
                         grid[i][j] = VOID;
-                        grid[i+1][j+1] = WATER;
-                    } else if (i+1 < CELL_AMOUNT && j-1 >= 0 && grid[i+1][j-1] == VOID) {
+                        grid[i + 1][j + 1] = WATER;
+                    } else if (i + 1 < CELL_AMOUNT && j - 1 >= 0 && grid[i + 1][j - 1] == VOID) {
                         grid[i][j] = VOID;
-                        grid[i+1][j-1] = WATER;
-                    } else if (j+1 < CELL_AMOUNT && grid[i][j+1] == VOID) {
-                        grid[i][j] = VOID;
-                        grid[i][j+1] = WATER;
-                    } else if (j-1 >= 0 && grid[i][j-1] == VOID) {
-                        grid[i][j] = VOID;
-                        grid[i][j-1] = WATER;
-                    } else if (j+1 < CELL_AMOUNT && grid[i][j+1] == WATER) {
-                        grid[i][j] = WATER;
-                        grid[i][j+1] = WATER;
-                    } else if (j-1 >= 0 && grid[i][j-1] == WATER) {
-                        grid[i][j] = WATER;
-                        grid[i][j-1] = WATER;
+                        grid[i + 1][j - 1] = WATER;
+                    } else {
+                        int direction = rand() % 2 == 0 ? -1 : 1;
+                        if (j + direction >= 0 && j + direction < CELL_AMOUNT && grid[i][j + direction] == VOID) {
+                            grid[i][j] = VOID;
+                            grid[i][j + direction] = WATER;
+                        }
                     }
                     break;
                 default:
                     break;
             }
+        }
+    }
+}
+
+void clearGrid(int grid[CELL_AMOUNT][CELL_AMOUNT])
+{
+    for (size_t i=0; i<CELL_AMOUNT; i++)
+    {
+        for (size_t j=0; j<CELL_AMOUNT; j++)
+        {
+            grid[i][j] = VOID;
         }
     }
 }

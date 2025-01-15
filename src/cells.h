@@ -55,7 +55,8 @@ typedef enum CellType
 } CellType;
 
 void drawGrid(int grid[CELL_AMOUNT][CELL_AMOUNT]);
-void putCell(int grid[CELL_AMOUNT][CELL_AMOUNT], int posX, int posY, CellType brush);
+void putCell(int grid[CELL_AMOUNT][CELL_AMOUNT], int posX, int posY, CellType brush, int brushSize);
 void updateGrid(int grid[CELL_AMOUNT][CELL_AMOUNT]);
+void clearGrid(int grid[CELL_AMOUNT][CELL_AMOUNT]);
 
 #endif // CELLS_H
