@@ -40,6 +40,7 @@ void drawGrid(int grid[CELL_AMOUNT][CELL_AMOUNT])
         {
             switch(grid[i][j])
             {
+                /* Cell drawing colors */
                 case VOID:
                     DrawRectangle(CELL_SIZE_PIXELS*j, CELL_SIZE_PIXELS*i, CELL_SIZE_PIXELS, CELL_SIZE_PIXELS, BLACK);
                     break;
@@ -54,6 +55,9 @@ void drawGrid(int grid[CELL_AMOUNT][CELL_AMOUNT])
                     break;
                 case VIRUS:
                     DrawRectangle(CELL_SIZE_PIXELS*j, CELL_SIZE_PIXELS*i, CELL_SIZE_PIXELS, CELL_SIZE_PIXELS, VIOLET);
+                    break;
+                case PLANT:
+                    DrawRectangle(CELL_SIZE_PIXELS*j, CELL_SIZE_PIXELS*i, CELL_SIZE_PIXELS, CELL_SIZE_PIXELS, DARKGREEN);
                     break;
                 default:
                     break;
@@ -93,6 +97,7 @@ void updateGrid(int grid[CELL_AMOUNT][CELL_AMOUNT]) {
     for (int i = CELL_AMOUNT - 1; i >= 0; i--) {
         for (int j = 0; j < CELL_AMOUNT; j++) {
             switch (grid[i][j]) {
+                /* Cell type behavior */
                 case VOID:
                     break;
                 case SAND:
@@ -146,6 +151,24 @@ void updateGrid(int grid[CELL_AMOUNT][CELL_AMOUNT]) {
                         if (propagate) grid[i][j-1] = VIRUS;
                     }
                     break;
+                    case PLANT:
+                        if (i+1 < CELL_AMOUNT && grid[i+1][j] == WATER) {
+                            int grow = rand() % 600 == 0 ? 1 : 0;
+                            if (grow) grid[i+1][j] = PLANT;
+                        }
+                        if (i-1 >= 0 && grid[i-1][j] == WATER) {
+                            int grow = rand() % 20 == 0 ? 1 : 0;
+                            if (grow) grid[i-1][j] = PLANT;
+                        }
+                        if (j+1 < CELL_AMOUNT && grid[i][j+1] == WATER) {
+                            int grow = rand() % 600 == 0 ? 1 : 0;
+                            if (grow) grid[i][j+1] = PLANT;
+                        }
+                        if (j-1 >= 0 && grid[i][j-1] == WATER) {
+                            int grow = rand() % 600 == 0 ? 1 : 0;
+                            if (grow) grid[i][j-1] = PLANT;
+                        }
+                        break;
                 default:
                     break;
             }
