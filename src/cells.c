@@ -52,6 +52,9 @@ void drawGrid(int grid[CELL_AMOUNT][CELL_AMOUNT])
                 case WATER:
                     DrawRectangle(CELL_SIZE_PIXELS*j, CELL_SIZE_PIXELS*i, CELL_SIZE_PIXELS, CELL_SIZE_PIXELS, BLUE);
                     break;
+                case VIRUS:
+                    DrawRectangle(CELL_SIZE_PIXELS*j, CELL_SIZE_PIXELS*i, CELL_SIZE_PIXELS, CELL_SIZE_PIXELS, VIOLET);
+                    break;
                 default:
                     break;
             }
@@ -123,6 +126,24 @@ void updateGrid(int grid[CELL_AMOUNT][CELL_AMOUNT]) {
                             grid[i][j] = VOID;
                             grid[i][j + direction] = WATER;
                         }
+                    }
+                    break;
+                case VIRUS: /* It should not be too powerful. */
+                    if (i + 1 < CELL_AMOUNT && grid[i+1][j] != VOID && grid[i+1][j] != VIRUS) {
+                        int propagate = rand() % 10 == 0 ? 1 : 0;
+                        if (propagate) grid[i+1][j] = VIRUS;
+                    }
+                    else if (i - 1 >= 0 && grid[i-1][j] != VOID && grid[i-1][j] != VIRUS) {
+                        int propagate = rand() % 10 == 0 ? 1 : 0;
+                        if (propagate) grid[i-1][j] = VIRUS;
+                    }
+                    else if (j+1 < CELL_AMOUNT && grid[i][j+1] != VOID && grid[i][j+1] != VIRUS) {
+                        int propagate = rand() % 10 == 0 ? 1 : 0;
+                        if (propagate) grid[i][j+1] = VIRUS;
+                    }
+                    else if (j-1 >= 0 && grid[i][j-1] != VOID && grid[i][j-1] != VIRUS) {
+                        int propagate = rand() % 10 == 0 ? 1 : 0;
+                        if (propagate) grid[i][j-1] = VIRUS;
                     }
                     break;
                 default:

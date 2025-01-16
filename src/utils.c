@@ -56,6 +56,7 @@ char* enumToString(CellType brush)
         case SAND:  return "Sand";
         case STONE: return "Stone";
         case WATER: return "Water";
+        case VIRUS: return "Virus";
         default:    return "Unknown";
     }
 }

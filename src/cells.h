@@ -53,6 +53,7 @@ typedef enum CellType
     SAND,
     STONE,
     WATER,
+    VIRUS,
     CELL_TYPE_MAX
 } CellType;
 
